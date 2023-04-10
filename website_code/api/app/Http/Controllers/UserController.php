@@ -23,13 +23,13 @@ class UserController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if (! $user || ! Hash::check($request->password, $user->password)) {
-                return response()->json(['status' => "error", 'message' => 'The provided credentials are incorrect.']);
+                return response()->json(['status' => "error", 'message' => 'The provided credentials are incorrect.'], 401);
             } else {
                 $token = $user->createToken($user->guid)->plainTextToken;
                 return response()->json(['status' => "OK", 'access_token' => $token]);
             }   
         } else {
-            return response()->json(['status' => "error", 'message' => $validator->errors()]);
+            return response()->json(['status' => "error", 'message' => $validator->errors()], 400);
         }
     }
 
@@ -56,12 +56,12 @@ class UserController extends Controller
 
                 $token = $user->createToken(Str::uuid()->toString())->plainTextToken;
             
-                return response()->json(['status' => "OK", 'message' => 'User has been successfully registered.', 'access_token' => $token]);
+                return response()->json(['status' => "OK", 'message' => 'User has been successfully registered.', 'access_token' => $token], 201);
             } catch (Exception $e){
-                return response()->json(['status' => "error", 'message' => $e]);
+                return response()->json(['status' => "error", 'message' => $e], 400);
             }
         } else {
-            return response()->json(['status' => "error", 'message' => $validator->errors()]);
+            return response()->json(['status' => "error", 'message' => $validator->errors()], 400);
         }
 
     }
