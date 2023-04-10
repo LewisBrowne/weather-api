@@ -1,0 +1,36 @@
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+  [entryPoints.dashboard]
+    address = ":8080"
+    [entryPoints.dashboard.auth]
+      [entryPoints.dashboard.auth.basic]
+        users = ["admin:$apr1$kibiidJs$oAOLlbC92VBwsD3WBJ3nP."]
+  [entryPoints.http]
+    address = ":80"
+      #[entryPoints.http.redirect]
+        #entryPoint = "https"
+  [entryPoints.https]
+    address = ":443"
+      [entryPoints.https.tls]
+         [[entryPoints.https.tls.certificates]]
+          #certFile = "/certs/sitename.co.uk.crt"
+          #keyFile = "/certs/sitename.co.uk.key"
+
+[acme]
+email = "lewis@broadlanddigital.co.uk"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+  [acme.httpChallenge]
+  entryPoint = "http"
+
+
+[api]
+entrypoint="dashboard"
+
+[docker]
+domain = "devicetradein.co.uk"
+watch = true
+network = "web"
+exposedbydefault = true

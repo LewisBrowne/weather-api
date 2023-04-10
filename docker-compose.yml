@@ -1,0 +1,70 @@
+version: '2'
+
+services:
+    api-nginx:
+        container_name: api_nginx
+        image: nginx:latest
+        labels:
+            - "traefik.enable=true"
+            - "traefik.frontend.rule=Host:api.local"
+            - "traefik.port=80"
+            - "traefik.docker.network=web"
+            - "traefik.default.protocol=http"
+        volumes:
+            - ./website_code/:/var/www/
+            - ./conf/nginx/site.conf:/etc/nginx/conf.d/default.conf
+            - ./.env:/var/www/.env
+            - ./ssl/:/certs/
+        depends_on: 
+            - api-php
+        networks:
+            - api-network
+            - web
+            
+    api-php:
+        container_name: api_php
+        build: .
+        volumes:
+            - ./website_code/:/var/www/
+            - ./.env:/var/www/.env
+            - ./scripts/install_laravel.sh:/root/install_laravel.sh
+        networks:
+            - api-network
+
+    api-db:
+        container_name: api_db
+        image: mysql
+        restart: always
+        volumes:
+            - ./db/:/var/lib/mysql
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: okay
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - 3306:3306
+        networks:
+            - api-network
+            - web
+
+    traefik:
+        image: traefik:v1.7.33
+        ports:
+            - 8080:8080
+            - 80:80
+            - 444:443
+        networks:
+            - web
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./traefik/traefik.toml:/traefik.toml
+            - ./traefik/acme.json:/acme.json
+            - ./ssl/:/certs/
+        container_name: traefik
+
+networks:
+    api-network:
+        driver: bridge
+    web:
+        external: true
