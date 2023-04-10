@@ -33,7 +33,7 @@
 								},
 								{
 									"key": "password",
-									"value": "test1234",
+									"value": "password123!321",
 									"type": "text"
 								}
 							]
@@ -71,12 +71,12 @@
 							"formdata": [
 								{
 									"key": "email",
-									"value": "test2@test.com",
+									"value": "test@test.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "test1234",
+									"value": "password123!",
 									"type": "text"
 								}
 							]
