@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\City;
 
@@ -78,6 +80,10 @@ class CityImport extends Command
             $this->info($insertCount.' new cities have been added.');
             $this->info($skipCount.' cities already exist.');
             $this->info($errorCount.' cities were unable to be imported.');
+
+            $value = Cache::rememberForever('city', function () {
+                return DB::table('city')->get();
+            });
 
             echo $response;
         }
