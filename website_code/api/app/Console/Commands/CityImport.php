@@ -57,20 +57,26 @@ class CityImport extends Command
                     continue;
                 }
 
-                if(City::where('name', $city[0])->first()){
-                    $skipCount++;
+                if(isset($city[0]) && isset($city[1])){
+                    if(City::where('name', $city[0])->first()){
+                        $skipCount++;
+                    } else {
+                        try{
+                            $city = City::create([
+                                'name' => $city[0],
+                                'guid' => Str::uuid()->toString(),
+                                'country' => $city[1]
+                            ]); 
+                            $insertCount++;
+                        } catch (Exception $e){
+                            $errorCount++;
+                        }
+                    }
                 } else {
-                    $city = City::create([
-                        'name' => $city[0],
-                        'guid' => Str::uuid()->toString(),
-                        'country' => $city[1]
-                    ]); 
-                    $insertCount++;
+                    $errorCount++;
                 }
                 
                 
-                
-
                 $this->output->progressAdvance();
                 $loopCount++;
             }
