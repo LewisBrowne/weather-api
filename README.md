@@ -8,3 +8,11 @@ docker exec -it api-php /bin/bash
 cd /root
 bash install_laravel.sh
 ```
+
+## Generating API Documentation
+```
+docker exec -it api-php /bin/bash
+php artisan scribe:generate
+```
+
+Then visit http://api.local/docs/index.html

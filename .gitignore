@@ -1,18 +1,18 @@
-website_code//vendor/
-website_code/node_modules/
+website_code/api/vendor/
+website_code/api/node_modules/
 
 # Laravel 4 specific
-website_code/bootstrap/compiled.php
-website_code/app/storage/
+website_code/api/bootstrap/compiled.php
+website_code/api/app/storage/
 
 # Laravel 5 & Lumen specific
-website_code/public/storage
-website_code/public/hot
+website_code/api/public/storage
+website_code/api/public/hot
+website_code/api/public/docs/
 
-# Laravel 5 & Lumen specific with changed public path
-website_code/public_html/storage
-website_code/public_html/hot
 
-website_code/storage/*.key
-website_code/.env
+website_code/api/storage/*.key
+website_code/api/.env
+
+website_code/api/.scribe/
 db/
