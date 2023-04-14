@@ -2,7 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserLocationController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\WeatherController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +23,23 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/user/register', 'register');
 });
 
+Route::controller(CityController::class)->group(function () {
+    Route::get('/city/{query}', 'search');
+    Route::get('/city', 'list');
+});
+
+Route::controller(WeatherController::class)->group(function () {
+    Route::get('/weather/now/city/{guid}', 'cityWeatherNow');
+    Route::get('/weather/history/city/{guid}', 'cityWeatherHistory');
+    Route::get('/weather/now/coord', 'coordWeatherNow');
+});
+
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::controller(UserLocationController::class)->group(function () {
+        Route::post('/user/location/', 'store');
+        Route::get('/user/location', 'list');
+        Route::get('/user/location/{guid}', 'getLocation');
+    });
     //Route::post('/user/test', [UserController::class, 'test']);
 });

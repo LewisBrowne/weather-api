@@ -81,17 +81,17 @@ class CityImport extends Command
                 $loopCount++;
             }
 
+            $value = Cache::rememberForever('city', function () {
+                return DB::table('city')->get();
+            });
+
             $this->output->progressFinish();
 
             $this->info($insertCount.' new cities have been added.');
             $this->info($skipCount.' cities already exist.');
             $this->info($errorCount.' cities were unable to be imported.');
 
-            $value = Cache::rememberForever('city', function () {
-                return DB::table('city')->get();
-            });
-
-            echo $response;
+            
         }
     }
 }
