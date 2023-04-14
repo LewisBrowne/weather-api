@@ -28,6 +28,8 @@ services:
             - ./website_code/:/var/www/
             - ./.env:/var/www/.env
             - ./scripts/install_laravel.sh:/root/install_laravel.sh
+            - ./conf/php/local.ini:/usr/local/etc/php/conf.d/docker-php-local.ini
+
         networks:
             - api-network
 
@@ -58,10 +60,10 @@ services:
             - 6379:6379
         networks:
             - api-network
-        
-        
 
 
+        
+            
     traefik:
         image: traefik:v1.7.33
         ports:
