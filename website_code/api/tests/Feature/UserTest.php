@@ -9,8 +9,7 @@ use Faker\Generator as Faker;
 
 
 class UserTest extends TestCase
-{
-    use RefreshDatabase;
+{  
 
     public function test_user_can_register(): void
     {
@@ -30,9 +29,11 @@ class UserTest extends TestCase
     public function test_user_can_login(): void
     {
         $faker = \Faker\Factory::create();
-        $response = $this->post('/api/user/register', ['first_name' => $faker->firstName(), 'last_name' => $faker->lastName(), 'email' => 'testemail@test.com', 'password' => 'testPassword123!']);
+        $email_address = $faker->safeEmail();
+        $password = $faker->password();
+        $response = $this->post('/api/user/register', ['first_name' => $faker->firstName(), 'last_name' => $faker->lastName(), 'email' => $email_address, 'password' => $password]);
 
-        $response = $this->post('/api/user/login', ['email' => 'testemail@test.com', 'password' => 'testPassword123!']);
+        $response = $this->post('/api/user/login', ['email' => $email_address, 'password' => $password]);
         $response->assertStatus(200);
     }
 
