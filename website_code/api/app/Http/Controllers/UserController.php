@@ -66,11 +66,25 @@ class UserController extends Controller
 
     }
 
+    public function DailyForecastSubscribeUnsubscribe(Request $request)
+    {
+        $user_id = $request->user()->id;
+        if($user_id){
+            $user = User::where('id', $user_id)->first();
 
-    // public function test(Request $request)
-    // {
-    //     $user = $request->user();
-    //     return response()->json($user);
-    // }
+            if($user->send_daily_forecast == 1){
+                $user->send_daily_forecast = 0;
+                $user->save();
+                return response()->json(['status' => "OK", 'message' => "You have successfully unsubscribed from receiving daily forecasts."], 200);
+            } else {
+                $user->send_daily_forecast = 1;
+                $user->save();
+                return response()->json(['status' => "OK", 'message' => "You have successfully subscribed to receiving daily forecasts."], 200);
+            }
+
+        } else {
+            return response()->json(['status' => "error", 'message' => "Unable to determine user."], 404);
+        }         
+    }
 
 }
