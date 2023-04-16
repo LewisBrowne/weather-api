@@ -9,7 +9,7 @@ use Tests\TestCase;
 use App\Models\City;
 
 class CityTest extends TestCase
-{     
+{       
     public function test_city_import_command(): void
     {
         $this->artisan('city:import')->assertSuccessful();
@@ -23,10 +23,11 @@ class CityTest extends TestCase
 
     public function test_city_search_returns(): void
     {
+        $this->artisan('city:import');
+        
         $city = City::where('name', 'Norwich')->first();
 
-        $response = $this->get('/api/city/'.$city->guid);
-
+        $response = $this->get('/api/city/Norwich');
         $response->assertStatus(200);
     }
 
