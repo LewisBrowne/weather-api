@@ -16,3 +16,4 @@ website_code/api/.env
 
 website_code/api/.scribe/
 db/
+cache/
