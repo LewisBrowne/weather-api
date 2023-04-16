@@ -36,9 +36,14 @@ Route::controller(WeatherController::class)->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::controller(UserController::class)->group(function () {
+        Route::put('/user/dailyforecast/', 'DailyForecastSubscribeUnsubscribe');
+    });
+
     Route::controller(UserLocationController::class)->group(function () {
         Route::post('/user/location/', 'store');
         Route::get('/user/location', 'list');
+        Route::delete('/user/location/{guid}', 'delete');
         Route::get('/user/location/{guid}', 'getLocation');
     });
     //Route::post('/user/test', [UserController::class, 'test']);

@@ -52,4 +52,30 @@ class UserTest extends TestCase
         $response = $this->post('/api/user/login', ['email' => $faker->safeEmail()]);
         $response->assertStatus(400);
     }
+
+    public function test_user_can_subscribe_to_daily_forecast(): void
+    {
+        $faker = \Faker\Factory::create();
+        $email_address = $faker->safeEmail();
+        $password = $faker->password();
+
+        $registration = $this->postJson('/api/user/register', ['first_name' => $faker->firstName(), 'last_name' => $faker->lastName(), 'email' => $email_address, 'password' => $password]);
+        $auth_token = $registration->decodeResponseJson()['access_token'];
+        
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$auth_token,
+        ])->put('/api/user/dailyforecast/'); 
+
+        $response->assertStatus(200);
+    }
+
+    public function test_user_cant_subscribe_to_daily_forecast_when_not_logged_in(): void
+    {
+        $faker = \Faker\Factory::create();
+        
+        $response = $this->putJson('/api/user/dailyforecast/'); 
+
+        $response->assertUnauthorized();
+    }
 }
