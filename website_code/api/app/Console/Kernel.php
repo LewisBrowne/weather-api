@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('city:import')->weekly();
+        $schedule->command('emails:dailyforecast:send')->daily();
     }
 
     /**
