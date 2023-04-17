@@ -61,6 +61,17 @@ services:
         networks:
             - api-network
 
+    mailhog:  
+        container_name: api_mail  
+        image: mailhog/mailhog
+        logging:
+            driver: 'none'  # disable saving logs
+        ports:
+            - 1025:1025 # smtp server
+            - 8025:8025 # web ui
+        networks:
+            - api-network
+
 
         
             
